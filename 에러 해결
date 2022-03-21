@@ -1,0 +1,5 @@
+※ 1.
+에러 발생 문구 : createMediaSource(song.toString(METADATA_KEY_MEDIA_URI).toUri())
+해결 방법 : createMediaSource 안에 데이터 형식(MediaItem 형식이여야하는데 Uri형식으로 구현)이 일치하지 않아서 발생한 오류
+createMediaSource(MediaItem.fromUri(METADATA_KEY_MEDIA_URI)) 로 수정하여 데이터 형식 맞춤
+
