@@ -12,6 +12,7 @@ import com.example.spotify_clone.exoplayer.callbacks.MusicPlaybackPreparer
 import com.example.spotify_clone.exoplayer.callbacks.MusicPlayerEventListener
 import com.example.spotify_clone.exoplayer.callbacks.MusicPlayerNotificationListener
 import com.example.spotify_clone.other.Constants.MEDIA_ROOT_ID
+import com.example.spotify_clone.other.Constants.NETWORK_ERROR
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
@@ -73,6 +74,8 @@ class MusicService : MediaBrowserServiceCompat() {
             isActive = true
         }
 
+        sessionToken = mediaSession.sessionToken
+
         musicNotificationManager = MusicNotificationManager(
             this,
             mediaSession.sessionToken,
@@ -80,8 +83,6 @@ class MusicService : MediaBrowserServiceCompat() {
         ) {
             curSongDuration = exoPlayer.duration
         }
-
-        sessionToken = mediaSession.sessionToken
 
         val musicPlaybackPreparer = MusicPlaybackPreparer(firebaseMusicSource) {
             curPlayingSong = it
@@ -159,6 +160,7 @@ class MusicService : MediaBrowserServiceCompat() {
                             isPlayerInitialized = true
                         }
                     } else {
+                        mediaSession.sendSessionEvent(NETWORK_ERROR, null)
                         result.sendResult(null)
                     }
                 }
